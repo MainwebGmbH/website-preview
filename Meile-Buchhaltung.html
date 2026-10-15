@@ -36,7 +36,8 @@ main{flex:1;display:flex;justify-content:center;gap:44px;padding:36px}
 .pscreen{position:relative;overflow:hidden;background:#fff}
 .hidden{display:none!important}
 .load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#8A867E;font-size:15px}
-</style>
+
+.fs header{display:none}.fs main{padding:0!important}</style>
 </head>
 <body>
 <header>
@@ -469,10 +470,14 @@ section{padding:96px 0;position:relative}
 <script>
 (function(){
   var html=document.getElementById('page').textContent.replace(/<\uE000/g,'<');
-  var url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
   var df=document.getElementById('dframe'),pf=document.getElementById('pframe');
-  df.src=url;pf.src=url;
-  document.getElementById('full').onclick=function(){window.open(url,'_blank')};
+  df.srcdoc=html;pf.srcdoc=html;
+  document.getElementById('full').onclick=function(){
+    var w=null;
+    try{var url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));w=window.open(url,'_blank')}catch(e){}
+    if(!w){try{w=window.open('','_blank');if(w){w.document.open();w.document.write(html);w.document.close()}}catch(e){}}
+    if(!w){document.body.classList.add('fs')}
+  };
   var mode='both';
   document.querySelectorAll('.seg button').forEach(function(btn){btn.onclick=function(){mode=btn.dataset.m;document.querySelectorAll('.seg button').forEach(function(x){x.classList.toggle('on',x===btn)});layout()}});
   var stage=document.getElementById('stage'),desk=document.getElementById('desk'),phone=document.getElementById('phone'),ds=document.getElementById('dscreen'),ps=document.getElementById('pscreen');
