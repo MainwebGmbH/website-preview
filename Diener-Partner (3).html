@@ -545,7 +545,8 @@ document.documentElement.classList.add('js');
 (function(){
   var html=document.getElementById('page').textContent.replace(/<\uE000/g,'<');
   var df=document.getElementById('dframe'),pf=document.getElementById('pframe');
-  df.srcdoc=html;pf.srcdoc=html;
+  var _fx='<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^=\'#\']");if(!a)return;var id=a.getAttribute("href").slice(1);e.preventDefault();if(!id){window.scrollTo({top:0,behavior:"smooth"});return}var t=document.getElementById(id);if(t)t.scrollIntoView({behavior:"smooth",block:"start"})},true);<\/script>';var _bi=html.lastIndexOf('</body>');var fhtml=_bi>-1?html.slice(0,_bi)+_fx+html.slice(_bi):html+_fx;
+  df.srcdoc=fhtml;pf.srcdoc=fhtml;
   document.getElementById('full').onclick=function(){
     var w=null;
     try{var url=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));w=window.open(url,'_blank')}catch(e){}
